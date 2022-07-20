@@ -1,8 +1,14 @@
-.container{
-    background-color: brown;
+.containerCenter{
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    background-color: var(--gray-900);
 
-    h1{
-        color: chartreuse;
-        font-size: 44px;
+    img{
+        max-width: 350px;
+        max-height: 250px;
     }
 }
+
