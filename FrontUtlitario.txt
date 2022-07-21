@@ -1,0 +1,15 @@
+===========================INSTAÇÕES PARA PROJETO===========================
+
+1-npx create-next-app frontend --typescript
+
+2-yarn add typescript @types/react @types/node -D
+
+3-yarn add sass("estilo css")
+
+4-yarn add react-icons
+
+5-yarn add axios
+
+6-yarn add nookies("trabalhando com cooke")
+
+7-yarn add jwt-decode("trabalhando com json web token")
