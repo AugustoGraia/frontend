@@ -1,10 +1,13 @@
 
 import { createContext, ReactNode, useState } from 'react';
+import { destroyCookie } from 'nookies';
+import Router from 'next/router';
 
 type AuthContextData = {
     user: UserProps;
     isAuthenticated: boolean;
     signIn:(credentials: SignInProps) => Promise<void>;
+    deslogarUser:() => void;
 }
 
 type UserProps = {
@@ -22,6 +25,17 @@ type AuthProviderProps ={
     children: ReactNode;
 }
 
+export function deslogarUser(){
+    try{
+        destroyCookie(undefined, '@pizzaria.token')    
+        Router.push('/')
+    }catch{
+        console.log("Erro deslogar")
+    }
+
+}
+
+
 
 export const AuthContext = createContext({} as AuthContextData)
 //Função para validar usuários autenticados
@@ -36,7 +50,7 @@ export function AuthProvider({ children }: AuthProviderProps){
     }
 
     return(
-        <AuthContext.Provider value={{ user, isAuthenticated, signIn }}>
+        <AuthContext.Provider value={{ user, isAuthenticated, signIn, deslogarUser }}>
             {children}
         </AuthContext.Provider>
     )
