@@ -16,7 +16,7 @@ export default function Home(){
 
   const [loading, setLoading] = useState(false)
 
-  const { signIn } = useContext(AuthContext)
+  const { logarUsuario } = useContext(AuthContext)
 
   async function handleLogin(event: FormEvent){
     event.preventDefault();
@@ -26,7 +26,7 @@ export default function Home(){
       password
     }
 
-   await signIn(data)
+   await logarUsuario(data)
   }
   return(
     <>

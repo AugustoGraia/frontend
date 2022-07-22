@@ -1,12 +1,13 @@
 
 import { createContext, ReactNode, useState } from 'react';
-import { destroyCookie } from 'nookies';
+import { destroyCookie, setCookie, parseCookies } from 'nookies';
 import Router from 'next/router';
+import { api } from '../services/apiClaent';
 
 type AuthContextData = {
     user: UserProps;
     isAuthenticated: boolean;
-    signIn:(credentials: SignInProps) => Promise<void>;
+    logarUsuario:(credentials: logarUsuarioProps) => Promise<void>;
     deslogarUser:() => void;
 }
 
@@ -16,7 +17,7 @@ type UserProps = {
     email: string;
 }
 
-type SignInProps ={
+type logarUsuarioProps ={
     email: string;
     password : string;
 }
@@ -35,22 +36,46 @@ export function deslogarUser(){
 
 }
 
-
-
 export const AuthContext = createContext({} as AuthContextData)
 //Função para validar usuários autenticados
 export function AuthProvider({ children }: AuthProviderProps){
 
     const [user, setUser] = useState<UserProps>()
     const isAuthenticated = !!user;
-    
-  async function signIn({email, password}: SignInProps){
-        console.log(email)
-        console.log(password)
+    // Função para logar usuario
+  async function logarUsuario({email, password}: logarUsuarioProps){
+
+        try{
+            const response = await api.post('/session',{
+                email,
+                password
+            })
+            console.log(response.data);
+            const {id, name, token} = response.data;
+            //Setando o cookie do user
+            setCookie(undefined, '@pizzaria.token', token,{
+                maxAge: 60 * 60 * 24 * 30, //Expirar em 1 mes 
+                path: "/" //Caminhos de acesso com cookie
+            })
+            setUser({
+                id,
+                name,
+                email
+            })
+
+            //Passar para proximas requisições o token
+            api.defaults.headers['Authorization'] = `Bearer ${token}`
+
+            //Redirecionar o usuario para a deshboard
+            Router.push("/dashboard")
+            
+        }catch(err){
+            console.log("ERRO AO ACESSAR ", err)
+        }
     }
 
     return(
-        <AuthContext.Provider value={{ user, isAuthenticated, signIn, deslogarUser }}>
+        <AuthContext.Provider value={{ user, isAuthenticated, logarUsuario, deslogarUser }}>
             {children}
         </AuthContext.Provider>
     )

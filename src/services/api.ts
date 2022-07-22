@@ -2,13 +2,14 @@ import axios, { AxiosError} from 'axios';
 import { parseCookies } from 'nookies';
 import { AuthTokenError } from './errors/AuthTokenErrors';
 import { deslogarUser } from '../context/AuthContext';
+
 export function ApiClien(ctx = undefined){
     let cookies = parseCookies(ctx);
 
     const api = axios.create({
         baseURL: 'http://localhost:3333',
         headers:{
-            Authorization: `Bearer ${cookies['@pizzaria.token']}`
+            Authorization: `Bearer ${cookies['@pizzaria.token']}` // Cookie do user
         }
     })
 
