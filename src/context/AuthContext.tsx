@@ -9,6 +9,7 @@ type AuthContextData = {
     isAuthenticated: boolean;
     logarUsuario:(credentials: logarUsuarioProps) => Promise<void>;
     deslogarUser:() => void;
+    cadastroUsuario:(credentials: cadastroProps) => Promise<void>;
 }
 
 type UserProps = {
@@ -22,11 +23,17 @@ type logarUsuarioProps ={
     password : string;
 }
 
+type cadastroProps = {
+    name: string;
+    email: string;
+    password: string;
+}
+
 type AuthProviderProps ={
     children: ReactNode;
 }
 
-export function deslogarUser(){
+    export function deslogarUser(){
     try{
         destroyCookie(undefined, '@pizzaria.token')    
         Router.push('/')
@@ -34,17 +41,16 @@ export function deslogarUser(){
         console.log("Erro deslogar")
     }
 
-}
+    }
 
 export const AuthContext = createContext({} as AuthContextData)
-//Função para validar usuários autenticados
+    //Função para validar usuários autenticados
 export function AuthProvider({ children }: AuthProviderProps){
 
     const [user, setUser] = useState<UserProps>()
     const isAuthenticated = !!user;
     // Função para logar usuario
-  async function logarUsuario({email, password}: logarUsuarioProps){
-
+    async function logarUsuario({email, password}: logarUsuarioProps){
         try{
             const response = await api.post('/session',{
                 email,
@@ -73,9 +79,25 @@ export function AuthProvider({ children }: AuthProviderProps){
             console.log("ERRO AO ACESSAR ", err)
         }
     }
+    // Função para cadastrar usuario
+    async function cadastroUsuario({name, email, password}: cadastroProps){
+        
+       try{
+            const response = await api.post('/users',{
+                name,
+                email,
+                password
+            })
+
+            Router.push("/")
+       }catch(err){
+        console.log("Erro ao cadastrar ", err)
+       }
+
+    }
 
     return(
-        <AuthContext.Provider value={{ user, isAuthenticated, logarUsuario, deslogarUser }}>
+        <AuthContext.Provider value={{ user, isAuthenticated, logarUsuario, deslogarUser, cadastroUsuario}}>
             {children}
         </AuthContext.Provider>
     )

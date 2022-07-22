@@ -1,15 +1,15 @@
-import { useState, FormEvent } from 'react';
+import { useState, FormEvent, useContext } from 'react';
 import Head from "next/head"
 import Image from "next/image";
 import styles from '../../../styles/home.module.scss';
 import {Input} from "../../components/interface/input";
 import { Button } from "../../components/interface/button";
 import Link from 'next/link';
-
+import { AuthContext } from '../../context/AuthContext';
 import pizza from '../../../public/pizza.png';
 
 export default function Cadastro(){
-
+  const { cadastroUsuario } = useContext(AuthContext)
   const [ name, setName] = useState('');
   const [ email, setEmail] = useState('');
   const [ password, setPassword] = useState('');
@@ -22,16 +22,18 @@ export default function Cadastro(){
       alert("PREENCHA TODOS OS CAMPOS")
     }
 
+      setLoading(true)
+      
     let data = {
       name,
       email,
       password,
     }
-    console.log(data)
+
+      await cadastroUsuario(data)
+
       setLoading(false)
   }
-
-
   return(
     <>
       <Head>
