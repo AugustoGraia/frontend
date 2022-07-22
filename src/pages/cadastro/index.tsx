@@ -1,3 +1,4 @@
+import { useState, FormEvent } from 'react';
 import Head from "next/head"
 import Image from "next/image";
 import styles from '../../../styles/home.module.scss';
@@ -8,6 +9,29 @@ import Link from 'next/link';
 import pizza from '../../../public/pizza.png';
 
 export default function Cadastro(){
+
+  const [ name, setName] = useState('');
+  const [ email, setEmail] = useState('');
+  const [ password, setPassword] = useState('');
+  const [ loading, setLoading] = useState(false);
+
+  async function cadastrarUsers(event: FormEvent){
+    event.preventDefault();
+
+    if(name === '' || email === '' || password === ''){
+      alert("PREENCHA TODOS OS CAMPOS")
+    }
+
+    let data = {
+      name,
+      email,
+      password,
+    }
+    console.log(data)
+      setLoading(false)
+  }
+
+
   return(
     <>
       <Head>
@@ -17,22 +41,28 @@ export default function Cadastro(){
         <Image className={styles.img} src={pizza}/>
         <div className={styles.login}> 
             <h1>Criando sua conta</h1>
-          <form>
+          <form onSubmit={cadastrarUsers}>
             <Input
                 placeholder="Digite seu nome"
                 type="text"
+                value={name}
+                onChange={(e)=> setName(e.target.value)}
                 />       
             <Input 
                 placeholder="Digite seu email"
                 type="text"
+                value={email}
+                onChange={ (e)=> setEmail(e.target.value)}
                 />
             <Input 
                 placeholder="Digite sua senha"
                 type="password"
+                value={password}
+                onChange={(e)=> setPassword(e.target.value)}
                 />
             <Button 
                 type="submit"
-                loading={false}
+                loading={loading}
             >
                 Cadastrar
            </Button>
