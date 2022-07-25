@@ -13,3 +13,5 @@
 6-yarn add nookies("trabalhando com cooke")
 
 7-yarn add jwt-decode("trabalhando com json web token")
+
+8-yarn add react-toastify("Alertas")
