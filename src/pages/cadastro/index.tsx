@@ -7,6 +7,7 @@ import { Button } from "../../components/interface/button";
 import Link from 'next/link';
 import { AuthContext } from '../../context/AuthContext';
 import pizza from '../../../public/pizza.png';
+import { toast } from 'react-toastify';
 
 export default function Cadastro(){
   const { cadastroUsuario } = useContext(AuthContext)
@@ -19,7 +20,8 @@ export default function Cadastro(){
     event.preventDefault();
 
     if(name === '' || email === '' || password === ''){
-      alert("PREENCHA TODOS OS CAMPOS")
+      toast.warning("Preencha todos os dados")
+      return;
     }
 
       setLoading(true)

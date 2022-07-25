@@ -4,6 +4,7 @@ import { destroyCookie, setCookie, parseCookies } from 'nookies';
 import Router from 'next/router';
 import { api } from '../services/apiClaent';
 import { toast } from 'react-toastify';
+
 type AuthContextData = {
     user: UserProps;
     isAuthenticated: boolean;
@@ -51,6 +52,7 @@ export function AuthProvider({ children }: AuthProviderProps){
     const isAuthenticated = !!user;
     // Função para logar usuario
     async function logarUsuario({email, password}: logarUsuarioProps){
+        
         try{
             const response = await api.post('/session',{
                 email,
@@ -95,7 +97,7 @@ export function AuthProvider({ children }: AuthProviderProps){
             toast.success("Conta criada com sucesso")
             Router.push("/")
        }catch(err){
-        toast.success("Error ao cadastrar")
+        toast.error("Error ao cadastrar")
         console.log("Erro ao cadastrar ", err)
        }
 

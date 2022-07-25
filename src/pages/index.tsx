@@ -5,8 +5,11 @@ import styles from '../../styles/home.module.scss';
 import {Input} from "../components/interface/input";
 import { Button } from "../components/interface/button";
 import Link from 'next/link';
+import { toast } from 'react-toastify';
 
 import pizza from '../../public/pizza.png';
+
+import { canSSRGuest } from '../utils/canSSRGuest'; 
 
 import { AuthContext } from '../context/AuthContext';
 
@@ -22,8 +25,10 @@ export default function Home(){
     event.preventDefault();
 
     if(email === '' || password === ''){
-      alert("PREENCHA OS DADOS")
+      toast.warning("Preencha todos os dados")
+      return;
     }
+    
     setLoading(true)
     let data = {
       email,
@@ -40,8 +45,7 @@ export default function Home(){
         <title>GetPizzaria - Login</title>
       </Head>
       <div className={styles.containerCenter}>
-        <Image className={styles.img} src={pizza}/>
-        
+        <Image className={styles.img} src={pizza}/>   
         <div className={styles.login}> 
           <form onSubmit={handleLogin}>
             <Input 
@@ -71,3 +75,10 @@ export default function Home(){
     </>
   )
 }
+
+export const getServerSideProps = canSSRGuest(async (context)=>{
+
+    return{
+      props: {}
+    }
+})
