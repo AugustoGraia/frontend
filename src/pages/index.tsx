@@ -75,7 +75,7 @@ export default function Home(){
     </>
   )
 }
-
+  // func para usuarios ñ logados 
 export const getServerSideProps = canSSRGuest(async (context)=>{
 
     return{
