@@ -10,6 +10,9 @@ export function canSSRAuth<P>(fn: GetServerSideProps<P>){
 
         const token = cookies['@pizzaria.token'];
 
+// A lógica é se o usuário estiver na aplicação sem token ele não esta
+// logado, se ele não etiver logado redirecionar para o login da página 
+
         if(!token){
             return{
                 redirect: {
@@ -18,8 +21,6 @@ export function canSSRAuth<P>(fn: GetServerSideProps<P>){
                 }
             }
         }
-//carlosaugusto@teste.com
-//123123
         try{
             return await fn(ctx);
         }catch(err){
