@@ -18,7 +18,8 @@ export function canSSRAuth<P>(fn: GetServerSideProps<P>){
                 }
             }
         }
-
+//carlosaugusto@teste.com
+//123123
         try{
             return await fn(ctx);
         }catch(err){
