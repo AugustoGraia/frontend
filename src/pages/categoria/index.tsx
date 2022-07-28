@@ -4,12 +4,13 @@ import { useState, FormEvent } from 'react';
 import styles from './styles.module.scss';
 import { ApiClien } from '../../services/api'; 
 import { toast } from 'react-toastify';
+import { canSSRAuth } from '../../utils/canSSRAuth';
 
 export default function Categoria(){
 
     const [name, setName] = useState('')
 
-    async function handleRegister(event: FormEvent){
+    async function fazerRegistro(event: FormEvent){
         event.preventDefault();
 
         if(name === ''){
@@ -35,7 +36,7 @@ export default function Categoria(){
                 <main className={styles.container}>
                     <h1>Cadastrar categoria</h1>
 
-                    <form className={styles.form} onSubmit={handleRegister}>
+                    <form className={styles.form} onSubmit={fazerRegistro}>
                         <input 
                         className={styles.input}
                         type="text"
@@ -53,3 +54,11 @@ export default function Categoria(){
         </>
     )
 }
+
+export const getServerSideProps = canSSRAuth(async (ctx) => {
+    
+    return {
+        props: {}
+    }
+})
+
