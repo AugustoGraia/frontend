@@ -10,7 +10,7 @@ export default function Dashboard(){
          </Head>
          <div>
             <Header />
-            <h1>Painel</h1>
+            
          </div>
        </>
     )
