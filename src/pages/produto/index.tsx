@@ -8,22 +8,29 @@ import { FiUpload } from 'react-icons/fi';
 
 export default function Produto( ) {
 
-    const [avatarUrl,  setAvatarUrl] = useState('');
-    const [imagAvatar, setImageAvatar]= useState(null);
+    const [avatarUrl, setAvatarUrl] = useState('');
+    const [images, setImages] = useState(null);
     //Validacao para imagem
-    function handleFile(foto : ChangeEvent<HTMLInputElement>){
-        console.log(foto.target.files)
+    function handleFile(e: ChangeEvent<HTMLInputElement>){
 
-        if(!foto.target.files){
-            return;
+        if(!e.target.files){
+          return;
         }
-        const imagem = foto.target.files;
-
-        if(!imagem){
-            return;
+    
+        const image = e.target.files[0];
+    
+        if(!image){
+          return;
         }
-
-    }
+    
+        if(image.type === 'image/jpeg' || image.type === 'image/png'){
+    
+            setImages(image);
+            setAvatarUrl(URL.createObjectURL(e.target.files[0]))
+    
+        }
+    
+      }
 
     return(
         <>
