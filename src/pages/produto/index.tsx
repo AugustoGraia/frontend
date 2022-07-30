@@ -1,4 +1,4 @@
-import { ChangeEvent, useState } from 'react';
+import { ChangeEvent, useState, FormEvent } from 'react';
 import Head from 'next/head';
 import { Header } from '../../components/Header/index';
 import styles from './styles.module.scss';
@@ -7,6 +7,7 @@ import { canSSRAuth } from '../../utils/canSSRAuth';
 import { ApiClien } from '../../services/api';
 
 import { FiUpload } from 'react-icons/fi';
+import { toast } from 'react-toastify';
 
 type ItemProps = {
     id: string;
@@ -21,11 +22,18 @@ export default function Produto({listaCategoria}:CategoriaProps) {
 
     console.log(listaCategoria)
 
+    //Imagem 
     const [ avatarUrl, setAvatarUrl ] = useState('');
     const [ images, setImages ] = useState(null);
 
-    const [categoria, setCategoria] = useState(listaCategoria || []);
-    const [selectCategoria, setSelectCategoria] = useState(0);
+    //Select Categoria
+    const [ categoria, setCategoria ] = useState(listaCategoria || []);
+    const [ selectCategoria, setSelectCategoria ] = useState(0);
+
+    //Formulario
+    const [ name, setName ] = useState('');
+    const [ price, setPrice ] = useState('');
+    const [ description, setDescription ] = useState('');
 
     //Validacao para imagem
     function handleFile(e: ChangeEvent<HTMLInputElement>){
@@ -34,7 +42,7 @@ export default function Produto({listaCategoria}:CategoriaProps) {
           return;
         }
     
-        const image = e.target.files[0];
+        const image = e.target.files[0]; 
     
         if(!image){
           return;
@@ -46,11 +54,48 @@ export default function Produto({listaCategoria}:CategoriaProps) {
             setAvatarUrl(URL.createObjectURL(e.target.files[0]))
         }
       }
-      //Seleciona categoria
+
+      //Seleciona categoria " Dados do select esta vindo do serverside "
       function handleSelect(event){
        //console.log(categoria[event.target.value])
-
+        
        setSelectCategoria(event.target.value)
+
+      }
+
+      async function handleRegistro(event : FormEvent){
+        event.preventDefault();
+
+        try{
+            const data = new FormData();
+
+            if(name === '' || price === '' || description === '' || images === ''){
+                toast.error("Preencha todos os dados");
+                return;
+            }
+
+            data.append('name', name);
+            data.append('price', price);
+            data.append('description', description);
+            data.append('category_id', categoria[selectCategoria].id);
+            data.append('file', images)
+
+            const api = ApiClien();
+
+            await api.post('product', data)
+
+            toast.success("Dados enviados com sucesso")
+
+        }catch(err){
+            console.log(err)
+            toast.error("Erro ao enviar dados!")
+        }
+
+        setAvatarUrl('');
+        setPrice('');
+        setDescription('');
+        setName('')
+        setImages(null)
 
       }
 
@@ -65,7 +110,7 @@ export default function Produto({listaCategoria}:CategoriaProps) {
                 <main className={styles.container}>
                     <h1>Novo produto</h1>
 
-                    <form className={styles.form}>
+                    <form className={styles.form} onSubmit={handleRegistro} >
 
                         <label className={styles.label}>
                             <span>
@@ -99,17 +144,23 @@ export default function Produto({listaCategoria}:CategoriaProps) {
                             className={styles.input}
                             placeholder="Digite o nome do seu produto"
                             type="text"
+                            value={name}
+                            onChange={ (e) => setName(e.target.value)}
                             />
 
                             <input
                             className={styles.input}
                             placeholder="Preço do produto"
                             type="text"
+                            value={price}
+                            onChange={ (e) => setPrice(e.target.value)}
                             />
 
                             <textarea
                             placeholder="Descreva seu produto"
                             className={styles.input}
+                            value={description}
+                            onChange={ (e) => setDescription(e.target.value)}
                             />
                             
                             <button className={styles.button} type="submit">
