@@ -35,7 +35,7 @@ export function ModalOrder({ aberto, fecharModal, orden }: ModalOrderProps){
 
         <button
         type="button"
-        onClick={onRequestClose}
+        onClick={fecharModal}
         className="react-modal-close"
         style={{ background: 'transparent', border: 0 }}
         >
