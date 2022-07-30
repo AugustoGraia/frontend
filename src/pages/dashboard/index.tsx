@@ -1,10 +1,35 @@
+import { useState } from 'react';
 import { canSSRAuth } from '../../utils/canSSRAuth';
 import Head from 'next/head'
 import {Header} from '../../components/Header/index'
 import styles from './styles.module.scss';
 import { FiRefreshCcw } from 'react-icons/fi';
 
-export default function Dashboard(){
+import { ApiClien } from '../../services/api';
+
+
+type OrderProps = {
+    id: string,
+    table: number | string,
+    status: boolean,
+    draft: boolean,
+    name: string | null
+}
+
+interface HomeProps {
+    orden : OrderProps[];
+}
+
+
+export default function Dashboard({ orden }: HomeProps){
+
+    const [ ordenList, setOrdenList ] = useState(orden || []);
+
+    function abrirModal( id:string ){
+        alert(`id ${id}`)
+    }
+
+
     return(
        <>
          <Head>
@@ -22,13 +47,14 @@ export default function Dashboard(){
 
                 <article className={styles.listOrders}>
 
-                    <section className={styles.orderItem}>
-                        <button>
-                            <div className={styles.tag}></div>
-                            <span>ssss</span>
-                        </button>
-                    </section>
-
+                    {ordenList.map( item => (
+                        <section key={item.id} className={styles.orderItem}>
+                            <button onClick ={() => { abrirModal(item.id) }}>
+                                <div className={styles.tag}></div>
+                                <span>Mesa {item.table}</span>
+                            </button>
+                        </section>
+                    ))}
                 </article>
             </main>
          </div>
@@ -38,7 +64,16 @@ export default function Dashboard(){
 
 export const getServerSideProps = canSSRAuth(async (ctx) => {
     
+    const api = ApiClien(ctx);
+
+    const response = await api.get('/orders');
+
+    console.log(response.data);
+
+
     return {
-        props: {}
+        props: {
+            orden: response.data
+        }
     }
 })
