@@ -14,7 +14,7 @@ import { ApiClien } from '../../services/api';
 
 type OrderProps = {
     id: string,
-    table: number | string,
+    table: number,
     status: boolean,
     draft: boolean,
     name: string | null
@@ -37,7 +37,7 @@ export type OrderItemProps = {
     }
     order:{
         id: string,
-        table: number | string,
+        table: number,
         status: boolean,
         name: string | null
     }
@@ -58,16 +58,16 @@ export default function Dashboard({ orden }: HomeProps){
 
    async function abrirModal( id:string ){
         
-    const api = ApiClien();
-    
-    const response = await api.get('/order/datail',{
-        params:{
-            orden_id: id,
-        }
-    })
+        const api = ApiClien();
+        
+        const response = await api.get('/order/datail',{
+            params:{
+                orden_id: id,
+            }
+        })
 
-        setModalItem(response.data)
-        setModalVisible(true)
+            setModalItem(response.data)
+            setModalVisible(true)
     }
 
     Modal.setAppElement('#__next');
@@ -102,7 +102,11 @@ export default function Dashboard({ orden }: HomeProps){
             </main>
 
             {modalVisible && (
-                <ModalOrder/>
+                <ModalOrder
+                aberto={modalVisible}
+                fecharModal={fechaModal}
+                orden={modelItem}
+                />
             )}
          </div>
        </>
