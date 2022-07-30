@@ -15,3 +15,9 @@
 7-yarn add jwt-decode("trabalhando com json web token")
 
 8-yarn add react-toastify("Alertas")
+
+9-yarn add react-icons("Icones")
+
+10-yarn add react-modal("")
+
+11-yarn add @types/react-modal

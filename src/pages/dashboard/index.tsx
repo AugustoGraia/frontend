@@ -5,6 +5,10 @@ import {Header} from '../../components/Header/index'
 import styles from './styles.module.scss';
 import { FiRefreshCcw } from 'react-icons/fi';
 
+import { ModalOrder } from '../../components/ModalOrder/index'; 
+
+import Modal from 'react-modal';
+
 import { ApiClien } from '../../services/api';
 
 
@@ -19,15 +23,54 @@ type OrderProps = {
 interface HomeProps {
     orden : OrderProps[];
 }
+ 
+export type OrderItemProps = {
+    id: string,
+    amount: string | number,
+    order_id: string,
+    product:{
+        id: string,
+        name: string,
+        description: string,
+        price: string,
+        banner: string,
+    }
+    order:{
+        id: string,
+        table: number | string,
+        status: boolean,
+        name: string | null
+    }
+}
 
 
 export default function Dashboard({ orden }: HomeProps){
 
     const [ ordenList, setOrdenList ] = useState(orden || []);
+    
+    const [ modelItem, setModalItem ] = useState<OrderItemProps[]>();
+    const [ modalVisible, setModalVisible ] = useState(false);
 
-    function abrirModal( id:string ){
-        alert(`id ${id}`)
+
+    function fechaModal(){
+        setModalVisible(false)
     }
+
+   async function abrirModal( id:string ){
+        
+    const api = ApiClien();
+    
+    const response = await api.get('/order/datail',{
+        params:{
+            orden_id: id,
+        }
+    })
+
+        setModalItem(response.data)
+        setModalVisible(true)
+    }
+
+    Modal.setAppElement('#__next');
 
 
     return(
@@ -57,6 +100,10 @@ export default function Dashboard({ orden }: HomeProps){
                     ))}
                 </article>
             </main>
+
+            {modalVisible && (
+                <ModalOrder/>
+            )}
          </div>
        </>
     )
