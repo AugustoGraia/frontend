@@ -8,8 +8,8 @@ import { FiUpload } from 'react-icons/fi';
 
 export default function Produto( ) {
 
-    const [avatarUrl, setAvatarUrl] = useState('');
-    const [images, setImages] = useState(null);
+    const [ avatarUrl, setAvatarUrl ] = useState('');
+    const [ images, setImages ] = useState(null);
     //Validacao para imagem
     function handleFile(e: ChangeEvent<HTMLInputElement>){
 
@@ -27,11 +27,8 @@ export default function Produto( ) {
     
             setImages(image);
             setAvatarUrl(URL.createObjectURL(e.target.files[0]))
-    
         }
-    
       }
-
     return(
         <>
         <Head>
