@@ -51,6 +51,7 @@ export default function Dashboard({ orden }: HomeProps){
     const [ modelItem, setModalItem ] = useState<OrderItemProps[]>();
     const [ modalVisible, setModalVisible ] = useState(false);
 
+    console.log(ordenList)
 
     function fechaModal(){
         setModalVisible(false)
