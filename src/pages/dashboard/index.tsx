@@ -46,17 +46,18 @@ export type OrderItemProps = {
 
 export default function Dashboard({ orders }: HomeProps){
 
-  const [orderList, setOrderList] = useState(orders || [])
+  const [orderList, setOrderList] = useState(orders || [])  
 
   const [modalItem, setModalItem] = useState<OrderItemProps[]>()
-  const [modalVisible, setModalVisible] = useState(true);
+  const [modalVisible, setModalVisible] = useState(false);
 
 
-  function handleCloseModal(){
+  function fecharModal(){
     setModalVisible(false);
   }
 
-  async function handleOpenModalView(id: string){
+    // Ira fazder a req com o parametro que foi dado onde order_id é o msm id
+  async function abrirModal(id: string){
    
      const apiClient = ApiClien(); 
 
@@ -95,7 +96,7 @@ export default function Dashboard({ orders }: HomeProps){
 
           {orderList.map( item => (
             <section  key={item.id} className={styles.orderItem}> 
-              <button onClick={ () => handleOpenModalView(item.id) }>
+              <button onClick={ () => abrirModal(item.id) }>
                 <div className={styles.tag}></div>
                 <span>Mesa {item.table}</span>
               </button>
@@ -109,7 +110,7 @@ export default function Dashboard({ orders }: HomeProps){
       { modalVisible && (
         <ModalOrder
           isOpen={modalVisible}
-          onRequestClose={handleCloseModal}
+          onRequestClose={fecharModal}
           order={modalItem}
         />
       )}
@@ -123,7 +124,7 @@ export const getServerSideProps = canSSRAuth(async (ctx) => {
   const apiClient = ApiClien(ctx);
 
   const response = await apiClient.get('/orders');
-  console.log(response.data);
+  //console.log(response.data);
 
 
   return {
