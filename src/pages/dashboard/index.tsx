@@ -72,6 +72,16 @@ export default function Dashboard({ orders }: HomeProps){
 
   }
 
+  async function enviarPedido(id: string){
+    const api = ApiClien();
+
+    await api.put('/order/finish',{
+        order_id: id,
+    })
+
+    setModalVisible(false);
+  }
+
 
   Modal.setAppElement('#__next');
 
@@ -112,6 +122,7 @@ export default function Dashboard({ orders }: HomeProps){
           isOpen={modalVisible}
           onRequestClose={fecharModal}
           order={modalItem}
+          finishOrder={enviarPedido}
         />
       )}
 
