@@ -3,7 +3,7 @@ import styles from './style.module.scss';
 
 import { FiX } from 'react-icons/fi';
 
-import { OrderItemProps } from '../../pages/dashboard/index';
+import { OrderItemProps } from '../../pages/dashboard';
 
 interface ModalOrderProps{
     aberto: boolean;
@@ -25,6 +25,8 @@ export function ModalOrder({ aberto, fecharModal, orden }: ModalOrderProps){
             backgroundColor: '#1d1f2e',
         }
     };
+    console.log("================")
+    console.log(orden[0].order.table)
 
     return(
     <Modal

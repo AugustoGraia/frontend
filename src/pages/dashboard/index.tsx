@@ -26,8 +26,9 @@ interface HomeProps {
  
 export type OrderItemProps = {
     id: string,
-    amount: string | number,
+    amount: number,
     order_id: string,
+    product_id: string
     product:{
         id: string,
         name: string,
@@ -37,7 +38,7 @@ export type OrderItemProps = {
     }
     order:{
         id: string,
-        table: number,
+        table: string | number,
         status: boolean,
         name: string | null
     }
