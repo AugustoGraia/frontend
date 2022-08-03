@@ -55,7 +55,7 @@ export default function Produto({listaCategoria}:CategoriaProps) {
         }
       }
 
-      //Seleciona categoria " Dados do select esta vindo do serverside "
+      //Seleciona categoria de um dos dados que vem do servidor 
       function handleSelect(event){
        //console.log(categoria[event.target.value])
         
