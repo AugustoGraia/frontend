@@ -35,12 +35,12 @@ type AuthProviderProps ={
 }
 
     export function deslogarUser(){
-    try{
-        destroyCookie(undefined, '@pizzaria.token')    
-        Router.push('/')
-    }catch{
-        console.log("Erro deslogar")
-    }
+        try{
+            destroyCookie(undefined, '@pizzaria.token')    
+            Router.push('/')
+        }catch{
+            console.log("Erro deslogar")
+        }
 
     }
 

@@ -20,7 +20,7 @@ interface CategoriaProps{
 
 export default function Produto({listaCategoria}:CategoriaProps) {
 
-    console.log(listaCategoria)
+    
 
     //Imagem 
     const [ avatarUrl, setAvatarUrl ] = useState('');

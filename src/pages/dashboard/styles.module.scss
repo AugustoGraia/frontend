@@ -14,6 +14,7 @@
 .containerHeader{
     display: flex;
     flex-direction: row;
+    margin-bottom: 14px;
 
     button{
         background-color: transparent;
@@ -26,6 +27,7 @@
     display: flex;
     flex-direction: column;
     margin: 1rem 0;
+    
 }
 
 .orderItem{
@@ -56,6 +58,11 @@
     margin-right: 1rem;
 }
 
+.listaVazia{
+    font-size: 1.5rem;
+    color: var(--gray-100);
+    
+}
 
 
 

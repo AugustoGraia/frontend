@@ -72,16 +72,27 @@ export default function Dashboard({ orders }: HomeProps){
 
   }
 
-  async function enviarPedido(id: string){
+  async function ConcluirPedido(id: string){
     const api = ApiClien();
-
     await api.put('/order/finish',{
         order_id: id,
     })
+    
+    const responce = await api.get('/orders');
 
+    setOrderList(responce.data);
     setModalVisible(false);
   }
 
+  async function refreshOrder(){
+
+    const api = ApiClien();
+
+    const responce = await api.get('/orders');
+
+    setOrderList(responce.data);
+
+  }
 
   Modal.setAppElement('#__next');
 
@@ -97,12 +108,18 @@ export default function Dashboard({ orders }: HomeProps){
 
         <div className={styles.containerHeader}>
           <h1>Últimos pedidos</h1>
-          <button>
+          <button onClick={refreshOrder}>
             <FiRefreshCcw size={25} color="#3fffa3"/>
           </button>
         </div>
 
         <article className={styles.listOreders}>
+
+          { orderList.length === 0 && (
+            <span className={styles.listaVazia}>
+              Nenhum pedido encontrado...
+            </span>
+          ) }
 
           {orderList.map( item => (
             <section  key={item.id} className={styles.orderItem}> 
@@ -122,7 +139,7 @@ export default function Dashboard({ orders }: HomeProps){
           isOpen={modalVisible}
           onRequestClose={fecharModal}
           order={modalItem}
-          finishOrder={enviarPedido}
+          ConcluirPedido={ConcluirPedido}
         />
       )}
 
