@@ -2,7 +2,7 @@ import { useState, FormEvent, useContext } from 'react';
 import Head from "next/head"
 import Image from "next/image";
 import styles from '../../../styles/home.module.scss';
-import {Input} from "../../components/interface/input";
+import { Input } from "../../components/interface/input";
 import { Button } from "../../components/interface/button";
 import Link from 'next/link';
 import { AuthContext } from '../../context/AuthContext';
@@ -14,6 +14,7 @@ export default function Cadastro(){
   const [ name, setName] = useState('');
   const [ email, setEmail] = useState('');
   const [ password, setPassword] = useState('');
+  const [ passwordConf, setPasswordConf] = useState('');
   const [ loading, setLoading] = useState(false);
 
   async function cadastrarUsers(event: FormEvent){
@@ -21,6 +22,11 @@ export default function Cadastro(){
 
     if(name === '' || email === '' || password === ''){
       toast.warning("Preencha todos os dados")
+      return;
+    }
+
+    if(password != passwordConf){
+      toast.warning("Senhas não iguais")
       return;
     }
 
@@ -64,6 +70,12 @@ export default function Cadastro(){
                 value={password}
                 onChange={(e)=> setPassword(e.target.value)}
                 />
+            <Input
+            placeholder="Confirme sua senha"
+            type="password"
+            value={passwordConf}
+            onChange={ (e) => setPasswordConf(e.target.value)}
+            />
             <Button 
                 type="submit"
                 loading={loading}
